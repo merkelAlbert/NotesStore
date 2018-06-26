@@ -1,11 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Identity;
 
 namespace Notes.DAL.Models
 {
-    public class User
+    public class User : IdentityUser<long>
     {
-        [Key] public int Id { get; set; }
-        public int Login { get; set; }
-        public int Password { get; set; }
     }
 }

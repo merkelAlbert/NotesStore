@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
+
 using Notes.DAL;
+using Notes.DAL.Models;
 
 namespace Notes
 {
@@ -26,10 +24,13 @@ namespace Notes
         {
             services.AddMvc();
             
-            var connectionString = Configuration.GetConnectionString("Notes");
+            var connectionString = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<DatabaseContext>(
                 options => options.UseNpgsql(connectionString)
             );
+
+            services.AddIdentity<User, IdentityRole<long>>()
+                .AddEntityFrameworkStores<DatabaseContext>();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -38,6 +39,8 @@ namespace Notes
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseAuthentication();
 
             app.UseMvc();
         }

@@ -5,9 +5,10 @@ namespace Notes.Controllers
     public class NotesController : Controller
     {
         // GET
+        [Route("notes")]
         public IActionResult Index()
         {
-            return null;
+            return Json("notes");
         }
     }
 }
