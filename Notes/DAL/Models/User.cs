@@ -3,7 +3,8 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Notes.DAL.Models
 {
-    public class User : IdentityUser<long>
+    public class User : IdentityUser
     {
+     
     }
 }

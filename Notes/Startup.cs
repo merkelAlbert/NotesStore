@@ -29,7 +29,7 @@ namespace Notes
                 options => options.UseNpgsql(connectionString)
             );
 
-            services.AddIdentity<User, IdentityRole<long>>()
+            services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<DatabaseContext>();
         }
 

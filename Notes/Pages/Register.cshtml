@@ -1,0 +1,26 @@
+﻿@page
+@using Notes.Pages.Models
+@model RegisterModel
+@{
+    ViewData["Title"] = "Регистрация";
+}
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>title</title>
+</head>
+<body>
+<div>
+    <h2>@Model.Message</h2>
+    <div asp-validation-summary="All"></div>
+    <form method="POST">
+        <div>Введите имя: <input type="text" name="userName"/></div>
+        <div>Введите почту: <input type="email" name="email"/></div>
+        <div>Введите пароль: <input type="password" name="passwordHash"/></div>
+        <div>Повторите пароль: <input type="password" name="confirmedPassword"/></div>
+        <input type="submit" value="Зарегистрироваться"/>
+    </form>
+</div>
+</body>
+</html>
