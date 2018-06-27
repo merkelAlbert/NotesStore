@@ -1,0 +1,38 @@
+﻿@using Notes.ViewModels
+@model LoginViewModel
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>Вход</title>
+</head>
+<body>
+<div>
+    <h2>@ViewBag.Message</h2>
+    <form method="post" asp-controller="Account" asp-action="Login">
+
+        <div asp-validation-summary="ValidationSummary.ModelOnly"></div>
+
+        <div>
+            <label asp-for="Email">Введите email</label><br/>
+            <input type="text" name="Email"/>
+            <span asp-validation-for="Email"></span>
+        </div>
+        <div>
+            <label asp-for="Password">Введите пароль</label><br/>
+            <input type="password" name="Password"/>
+            <span asp-validation-for="Password"></span>
+        </div>
+
+        <div> 
+            <label asp-for = "RememberMe">Запомнить меня</label> 
+            <input  type="checkbox" name = "RememberMe" value="true" checked/> 
+        </div> 
+        <div>
+            <input type="submit" value="Войти"/>
+        </div>
+    </form>
+</div>
+</body>
+</html>
