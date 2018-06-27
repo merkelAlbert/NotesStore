@@ -38,24 +38,29 @@ namespace Notes.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new User {UserName = model.UserName, Email = model.Email};
-                var result = await _userManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
+                var userByEmail = await _userManager.FindByEmailAsync(model.Email);
+                if (userByEmail != null)
                 {
-                    await _signInManager.SignInAsync(user, false);
-                    return RedirectToPage("/Index");
+                    ModelState.AddModelError("", "Пользователь с данным email уже существует");
+                }
+                else
+                {
+                    var user = new User {UserName = model.UserName, Email = model.Email};
+                    var result = await _userManager.CreateAsync(user, model.Password);
+                    if (result.Succeeded)
+                    {
+                        await _signInManager.SignInAsync(user, false);
+                        return RedirectToAction("Login");
+                    }
+
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError("", error.Description);
+                    }
                 }
             }
 
-            var errors = ModelState.Values.SelectMany(v => v.Errors);
-            var errorMesage = "";
-            foreach (var error in errors)
-            {
-                errorMesage += error.ErrorMessage;
-            }
-
-            ViewBag.Message = errorMesage;
-            return View("Register");
+            return View(model);
         }
 
 
@@ -63,7 +68,6 @@ namespace Notes.Controllers
         [Route("login/")]
         public IActionResult Login()
         {
-            ViewBag.Message = "Вход";
             return View("Login");
         }
 
@@ -81,7 +85,7 @@ namespace Notes.Controllers
                         model.Password, model.RememberMe, false);
                     if (result.Succeeded)
                     {
-                        ViewBag.Message = "Вы вошли";
+                        return RedirectToAction("Index", "Home");
                     }
                     else
                     {
@@ -94,15 +98,15 @@ namespace Notes.Controllers
                 }
             }
 
-            var errors = ModelState.Values.SelectMany(v => v.Errors);
-            var errorMesage = "";
-            foreach (var error in errors)
-            {
-                errorMesage += error.ErrorMessage;
-            }
+            return View(model);
+        }
 
-            ViewBag.Message = errorMesage;
-            return View("Login");
+        [HttpGet]
+        [Route("logout/")]
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+            return RedirectToAction("Login");
         }
     }
 }

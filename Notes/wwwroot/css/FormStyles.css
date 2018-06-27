@@ -1,0 +1,24 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto');
+body {
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+}
+
+.authorization-container{
+    display: flex;
+    justify-content: center;
+    margin-top: 100px;
+}
+
+.authorization-form{
+    background-color: #eee;
+    padding: 60px;
+    border-radius: 10px;
+}
+
+.authorization-form-label{
+    margin-bottom: 10px;
+}
+.authorization-form-input{
+    margin-bottom: 15px;
+}
