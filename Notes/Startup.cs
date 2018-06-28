@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 using Notes.DAL;
 using Notes.DAL.Models;
+using Notes.Services;
 
 namespace Notes
 {
@@ -28,6 +29,8 @@ namespace Notes
             services.AddDbContext<DatabaseContext>(
                 options => options.UseNpgsql(connectionString)
             );
+
+            services.AddScoped<IdenticonService>();
 
             services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<DatabaseContext>();

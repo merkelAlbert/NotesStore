@@ -31,10 +31,7 @@ namespace Notes.Controllers
             if (user != null)
             {
                 var notes = _databaseContext.Notes.Where(note => note.User.Id.Equals(user.Id)).ToList();
-                foreach (var note in notes)
-                {
-                    Console.WriteLine(note.Text);
-                }
+                
                 return View("Index", notes);
             }
 

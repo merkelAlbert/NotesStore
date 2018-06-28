@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Notes.DAL;
 using Notes.DAL.Models;
+using Notes.Services;
 using Notes.ViewModels;
 
 namespace Notes.Controllers
@@ -16,13 +17,15 @@ namespace Notes.Controllers
         private readonly Microsoft.AspNetCore.Identity.UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
         private readonly DatabaseContext _databaseContext;
+        private readonly IdenticonService _identiconService;
 
         public NotesController(Microsoft.AspNetCore.Identity.UserManager<User> userManager,
-            SignInManager<User> signInManager, DatabaseContext databaseContext)
+            SignInManager<User> signInManager, DatabaseContext databaseContext, IdenticonService identiconService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _databaseContext = databaseContext;
+            _identiconService = identiconService;
         }
 
         [Authorize]
@@ -46,6 +49,7 @@ namespace Notes.Controllers
                     note.Text = model.Text;
                     note.Title = model.Title;
                     note.User = user;
+                    note.Identicon = _identiconService.GetIdenticon((model.Text + model.Title).GetHashCode().ToString());
                     await _databaseContext.Notes.AddAsync(note);
                     _databaseContext.SaveChanges();
                     return RedirectToAction("Index", "Home");
