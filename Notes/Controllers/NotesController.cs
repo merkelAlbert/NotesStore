@@ -5,6 +5,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Notes.DAL;
 using Notes.DAL.Models;
 using Notes.Services;
@@ -40,12 +41,12 @@ namespace Notes.Controllers
         [Route("createNote/")]
         public async Task<IActionResult> CreateNote(NoteViewModel model)
         {
+            var note = new Note();
             if (ModelState.IsValid)
             {
                 var user = await _userManager.FindByIdAsync(User.Identity.GetUserId());
                 if (user != null)
                 {
-                    var note = new Note();
                     note.Text = model.Text;
                     note.Title = model.Title;
                     note.User = user;
@@ -65,17 +66,48 @@ namespace Notes.Controllers
         {
             if (id != null)
             {
-                if (ModelState.IsValid)
+                var note = _databaseContext.Notes.First(x => x.Id.Equals(id));
+                if (note != null)
                 {
-                    var note = _databaseContext.Notes.First(x => x.Id.Equals(id));
-                    if (note != null)
-                    {
-                        _databaseContext.Notes.Remove(note);
-                        await _databaseContext.SaveChangesAsync();
-                    }
+                    _databaseContext.Notes.Remove(note);
+                    await _databaseContext.SaveChangesAsync();
                 }
             }
+
             return RedirectToAction("Index", "Home");
+        }
+
+
+        [HttpGet]
+        [Route("updateNote/")]
+        public IActionResult UpdateNote(int? id)
+        {
+            if (id != null)
+            {
+                var note = _databaseContext.Notes.First(x => x.Id.Equals(id));
+                ViewData["note"] = note;
+            }
+
+            return View("CreateNote");
+        }
+
+        [HttpPost]
+        [Route("updateNote/")]
+        public async Task<IActionResult> UpdateNote(NoteViewModel model, int? id)
+        {
+            if (ModelState.IsValid)
+            {
+                var note = _databaseContext.Notes.First(x => x.Id.Equals(id));
+                note.Text = model.Text;
+                note.Title = model.Title;
+                note.Identicon =
+                    _identiconService.GetIdenticon((model.Text + model.Title).GetHashCode().ToString());
+                _databaseContext.Update(note);
+                await _databaseContext.SaveChangesAsync();
+                return RedirectToAction("Index", "Home");
+            }
+
+            return View("CreateNote");
         }
     }
 }

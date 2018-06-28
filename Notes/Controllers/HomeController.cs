@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
@@ -28,14 +29,13 @@ namespace Notes.Controllers
         public async Task<IActionResult> Index()
         {
             var user = await _userManager.FindByIdAsync(User.Identity.GetUserId());
+            var notes = new List<Note>();
             if (user != null)
             {
-                var notes = _databaseContext.Notes.Where(note => note.User.Id.Equals(user.Id)).ToList();
-                
-                return View("Index", notes);
+                notes = _databaseContext.Notes.Where(note => note.User.Id.Equals(user.Id)).ToList();
             }
 
-            return View();
+            return View("Index", notes);
         }
     }
 }

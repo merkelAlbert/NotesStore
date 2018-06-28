@@ -5,7 +5,11 @@
     <div class="note-card-header">
         <div class="note-card-header-image">
             @{
-                var base64 = Convert.ToBase64String(Model.Identicon);
+                var base64 = "";
+                if (Model.Identicon != null)
+                {
+                    base64 = Convert.ToBase64String(Model.Identicon);
+                }
                 var imgSrc = string.Format($"data:image/svg+xml;base64,{base64}");
             }
             <object type="image/svg+xml" data="@imgSrc"></object>
@@ -27,9 +31,9 @@
     </div>
     <hr class="note-card-devider"/>
     <div class="note-card-footer">
-        <div class="note-card-footer-button">
+        <a class="note-card-footer-button" asp-action="UpdateNote" asp-route-id="@Model.Id" asp-controller="Notes">
             <img class="note-card-footer-button-image" src="~/images/change.svg"/>
-        </div>
+        </a>
         <div class="note-card-footer-button">
             <img class="note-card-footer-button-image" src="~/images/look.svg"/>
         </div>
