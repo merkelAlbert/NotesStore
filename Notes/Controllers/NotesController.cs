@@ -49,7 +49,8 @@ namespace Notes.Controllers
                     note.Text = model.Text;
                     note.Title = model.Title;
                     note.User = user;
-                    note.Identicon = _identiconService.GetIdenticon((model.Text + model.Title).GetHashCode().ToString());
+                    note.Identicon =
+                        _identiconService.GetIdenticon((model.Text + model.Title).GetHashCode().ToString());
                     await _databaseContext.Notes.AddAsync(note);
                     _databaseContext.SaveChanges();
                     return RedirectToAction("Index", "Home");
@@ -57,6 +58,24 @@ namespace Notes.Controllers
             }
 
             return View(model);
+        }
+
+        [Route("deleteNote/")]
+        public async Task<ActionResult> DeleteNote(int? id)
+        {
+            if (id != null)
+            {
+                if (ModelState.IsValid)
+                {
+                    var note = _databaseContext.Notes.First(x => x.Id.Equals(id));
+                    if (note != null)
+                    {
+                        _databaseContext.Notes.Remove(note);
+                        await _databaseContext.SaveChangesAsync();
+                    }
+                }
+            }
+            return RedirectToAction("Index", "Home");
         }
     }
 }

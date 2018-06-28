@@ -1,13 +1,40 @@
-﻿@using Notes.ViewModels
-<div class="note-wrap">
-    <div class="note-card">
-        оба
-        @*<div class="note-card-front">
-            <div class="note-card-front-img">
-                <img/>
-            </div>
-            <div class="note-card-front-title">
-            </div>
-        </div>*@
+﻿@using Notes.DAL.Models
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@model  Note
+<div class="note-card">
+    <div class="note-card-header">
+        <div class="note-card-header-image">
+            @{
+                var base64 = Convert.ToBase64String(Model.Identicon);
+                var imgSrc = string.Format($"data:image/svg+xml;base64,{base64}");
+            }
+            <object type="image/svg+xml" data="@imgSrc"></object>
+        </div>
+        <h2 class="note-card-header-title">
+            @Model.Title
+        </h2>
+    </div>
+    <hr class="note-card-devider"/>
+    <div class="note-card-text">
+        @if (Model.Text.Length > 300)
+        {
+            @Model.Text.Substring(0, 300).Insert(300, "...")
+        }
+        else
+        {
+            @Model.Text
+        }
+    </div>
+    <hr class="note-card-devider"/>
+    <div class="note-card-footer">
+        <div class="note-card-footer-button">
+            <img class="note-card-footer-button-image" src="~/images/change.svg"/>
+        </div>
+        <div class="note-card-footer-button">
+            <img class="note-card-footer-button-image" src="~/images/look.svg"/>
+        </div>
+        <a class="note-card-footer-button" asp-action="DeleteNote" asp-route-id="@Model.Id" asp-controller="Notes">
+            <img class="note-card-footer-button-image" src="~/images/delete.svg"/>
+        </a>
     </div>
 </div>

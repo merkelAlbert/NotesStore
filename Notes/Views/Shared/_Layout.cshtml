@@ -18,6 +18,12 @@
         <ul class="header-menu-list">
             @if (User.Identity.IsAuthenticated)
             {
+                <li>
+                    <form>
+                        <input class="header-search" type="text"/>
+                        <input class="header-search" type="submit" value="Найти"/>
+                    </form>
+                </li>
                 <li class="header-menu-item">
                     <a asp-controller="Notes" asp-action="CreateNote">Создать заметку</a>
                 </li>

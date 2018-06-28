@@ -13,7 +13,6 @@ namespace Notes.Services
         {
             using (var client = new HttpClient())
             {
-                Console.WriteLine($"{Url}/{value}.svg");
                 var response = client.GetByteArrayAsync($"{Url}/{value}.svg").Result;
                 return response;
             }

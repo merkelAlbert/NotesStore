@@ -1,6 +1,4 @@
 ﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
-@using System.Drawing
-@using System.IO
 @using Notes.DAL.Models
 @model IEnumerable<Note>
 @{
@@ -8,18 +6,12 @@
     ViewData["Title"] = "Заметки";
 }
 
+@section Styles{
+    <link href="~/css/NoteStyles.css" rel="stylesheet"/>
+}
 <div class="notes-container">
     @foreach (var note in Model)
     {
-        <div>
-            @{
-                
-                var base64 = Convert.ToBase64String(note.Identicon);
-                var imgSrc = string.Format($"data:image/svg+xml;base64,{base64}");
-            }
-            <object type="image/svg+xml" data="@imgSrc" width="24px" height="24px">
-                
-            </object>
-        </div>
+            @Html.Partial("~/Views/Notes/Note.cshtml", note)
     }
 </div>
