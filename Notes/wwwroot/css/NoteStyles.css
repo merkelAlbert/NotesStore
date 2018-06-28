@@ -71,3 +71,18 @@
     width: inherit;
     height: inherit;
 }
+
+
+
+.note-card-full{
+    width: 960px;
+    background-color: aliceblue;
+    border-radius: 10px;
+    padding: 10px;
+    box-shadow: 0 3px 5px #5c6363;
+    margin: 15px;
+}
+
+.note-card-full-text{
+    word-break: break-all;
+}

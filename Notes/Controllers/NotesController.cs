@@ -109,5 +109,18 @@ namespace Notes.Controllers
 
             return View("CreateNote");
         }
+
+        [HttpGet]
+        [Route("showNote/")]
+        public IActionResult ShowNote(int? id)
+        {
+            if (id != null)
+            {
+                var note = _databaseContext.Notes.First(x => x.Id.Equals(id));
+                return View("ShowNote", note);
+            }
+
+            return RedirectToAction("Index", "Home");
+        }
     }
 }

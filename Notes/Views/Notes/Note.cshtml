@@ -34,9 +34,9 @@
         <a class="note-card-footer-button" asp-action="UpdateNote" asp-route-id="@Model.Id" asp-controller="Notes">
             <img class="note-card-footer-button-image" src="~/images/change.svg"/>
         </a>
-        <div class="note-card-footer-button">
+        <a class="note-card-footer-button" asp-action="ShowNote" asp-route-id="@Model.Id" asp-controller="Notes">
             <img class="note-card-footer-button-image" src="~/images/look.svg"/>
-        </div>
+        </a>
         <a class="note-card-footer-button" asp-action="DeleteNote" asp-route-id="@Model.Id" asp-controller="Notes">
             <img class="note-card-footer-button-image" src="~/images/delete.svg"/>
         </a>
