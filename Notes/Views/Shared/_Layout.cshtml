@@ -1,0 +1,43 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    @{
+        ViewData["Title"] = "Заметки";
+    }
+    <link rel="stylesheet" href="~/css/Styles.css"/>
+    @RenderSection("Styles", false)
+</head>
+<body>
+<header class="header">
+    <div class="header-title">
+        <a asp-controller="Home" asp-action="Index">NotesStore</a>
+    </div>
+    <nav class="header-menu">
+        <ul class="header-menu-list">
+            @if (User.Identity.IsAuthenticated)
+            {
+                <li class="header-menu-item">
+                    <a asp-controller="Notes" asp-action="CreateNote">Создать заметку</a>
+                </li>
+                <li class="header-menu-item">
+                    <a asp-controller="Account" asp-action="Logout">Выйти</a>
+                </li>
+            }
+            else
+            {
+                <li class="header-menu-item">
+                    <a asp-controller="Account" asp-action="Login">Войти/Зарегистрироваться</a>
+                </li>
+            }
+        </ul>
+    </nav>
+</header>
+<section>
+    <div class="content-container">
+        @RenderBody()
+    </div>
+</section>
+</body>
+</html>

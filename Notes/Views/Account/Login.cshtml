@@ -1,42 +1,38 @@
 ﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @using Notes.ViewModels
 @model LoginViewModel
-<!DOCTYPE html>
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Вход";
+}
 
-<html>
-<head>
-    <meta charset="utf-8"/>
-    <title>Вход</title>
-    <link rel="stylesheet" href="~/css/FormStyles.css"/>
-</head>
-<body>
-<div class="authorization-container">
-    <form class="authorization-form" method="post">
+@section Styles{
+    <link href="~/css/FormStyles.css" rel="stylesheet"/>
+}
 
-        <div asp-validation-summary="ModelOnly"></div>
+<form class="form" method="post">
 
-        <div>
-            <div class="authorization-form-label">Введите email</div>
-            <input class="authorization-form-input" type="text" name="Email"/>
-            <span asp-validation-for="Email"></span>
-        </div>
-        <div>
-            <div class="authorization-form-label">Введите Пароль</div>
-            <input class="authorization-form-input" type="password" name="Password"/>
-            <span asp-validation-for="Password"></span>
-        </div>
+    <div asp-validation-summary="ModelOnly"></div>
 
-        <div> 
-            <label asp-for="RememberMe">Запомнить меня</label>
-            <input class="authorization-form-input" type="checkbox" name = "RememberMe" value="true" checked/> 
-        </div> 
-        <div>
-            <input class="authorization-form-input" type="submit" value="Войти"/>
-        </div>
-        <div>
-            <a asp-action="Register">Зарегистрироваться</a>
-        </div>
-    </form>
-</div>
-</body>
-</html>
+    <div class="form-item-container">
+        <div class="form-label">Введите email</div>
+        <input class="form-input" type="text" name="Email"/>
+        <span asp-validation-for="Email"></span>
+    </div>
+    <div class="form-item-container">
+        <div class="form-label">Введите Пароль</div>
+        <input class="form-input" type="password" name="Password"/>
+        <span asp-validation-for="Password"></span>
+    </div>
+
+    <div class="form-item-container">
+        <label asp-for="RememberMe">Запомнить меня</label>
+        <input type="checkbox" name="RememberMe" value="true" checked/>
+    </div>
+    <div class="form-item-container">
+        <input class="form-input" type="submit" value="Войти"/>
+    </div>
+    <div class="form-item-container">
+        <a asp-action="Register">Зарегистрироваться</a>
+    </div>
+</form>

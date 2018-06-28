@@ -40,7 +40,7 @@ body {
     opacity: 0.6;
 }
 
-.header-menu-item a{
+.header a{
     color: inherit;
     text-decoration: none;
 }
@@ -50,4 +50,12 @@ body {
 
 .header ul{
     list-style-type:none;
+}
+
+
+.content-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
 }

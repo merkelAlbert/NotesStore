@@ -1,0 +1,29 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@model Notes.ViewModels.NoteViewModel
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Создание заметки";
+}
+
+@section Styles{
+    <link href="~/css/FormStyles.css" rel="stylesheet"/>
+}
+
+<form class="form" method="post">
+
+    <div asp-validation-summary="ModelOnly"></div>
+
+    <div class="form-item-container">
+        <div class="form-label">Введите Заголовок</div>
+        <input class="form-input" type="text" name="Title"/>
+        <span asp-validation-for="Title"></span>
+    </div>
+    <div class="form-item-container">
+        <div class="form-label">Введите текст</div>
+        <textarea class="form-input form-textarea" name="Text"></textarea>
+        <span asp-validation-for="Text"></span>
+    </div>
+    <div class="form-item-container">
+        <input type="submit" class="form-input" value="Создать">
+    </div>
+</form>

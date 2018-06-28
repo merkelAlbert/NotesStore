@@ -27,7 +27,6 @@ namespace Notes.Controllers
         [Route("register/")]
         public IActionResult Register()
         {
-            ViewBag.Message = "Регистрация нового пользователя";
             return View("Register");
         }
 

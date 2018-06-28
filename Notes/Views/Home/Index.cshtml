@@ -1,21 +1,14 @@
 ﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
-<!DOCTYPE html>
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Заметки";
+}
 
-<html>
-<head>
-    <meta charset="utf-8"/>
-    <title>Главная</title>
-    <link rel="stylesheet" href="~/css/Styles.css"/>
-</head>
-<body>
-<header class="header">
-    <div class="header-title">NotesStore</div>
-    <nav class="header-menu">
-        <ul class="header-menu-list">
-            <li class="header-menu-item">Создать заметку</li>
-            <li class="header-menu-item"><a asp-controller="Account" asp-action="Logout">Выйти</a></li>
-        </ul>
-    </nav>
-</header>
-</body>
-</html>
+@*<div class="notes-container">
+    @foreach (var note in Model)
+    {
+        <article>
+            @Html.RenderPartialAsync("~/Views/Notes/Note.cshtml");
+        </article>
+    }
+</div>*@
