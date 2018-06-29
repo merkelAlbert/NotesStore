@@ -122,5 +122,14 @@ namespace Notes.Controllers
 
             return RedirectToAction("Index", "Home");
         }
+
+        [HttpPost]
+        [Route("findNote/")]
+        public IActionResult FindNote(string searchString)
+        {
+            var notes = _databaseContext.Notes.Where(x => x.Text.Contains(searchString)
+                                                          || x.Title.Contains(searchString));
+            return View("FindedNotes", notes);
+        }
     }
 }

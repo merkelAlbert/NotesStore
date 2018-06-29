@@ -19,8 +19,8 @@
             @if (User.Identity.IsAuthenticated)
             {
                 <li>
-                    <form>
-                        <input class="header-search" type="text"/>
+                    <form method="post" asp-action="FindNote" asp-controller="Notes">
+                        <input class="header-search" name="SearchString" type="text"/>
                         <input class="header-search" type="submit" value="Найти"/>
                     </form>
                 </li>
