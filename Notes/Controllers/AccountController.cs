@@ -48,7 +48,6 @@ namespace Notes.Controllers
                     var result = await _userManager.CreateAsync(user, model.Password);
                     if (result.Succeeded)
                     {
-                        await _signInManager.SignInAsync(user, false);
                         return RedirectToAction("Login");
                     }
 
