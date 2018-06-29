@@ -72,9 +72,7 @@
     height: inherit;
 }
 
-
-
-.note-card-full{
+.note-card-full {
     width: 960px;
     background-color: aliceblue;
     border-radius: 10px;
@@ -83,6 +81,10 @@
     margin: 15px;
 }
 
-.note-card-full-text{
+.note-card-full-text {
     word-break: break-all;
+}
+
+.finded-title {
+    width: 100%;
 }

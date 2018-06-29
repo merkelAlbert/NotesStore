@@ -10,8 +10,8 @@
     <link href="~/css/NoteStyles.css" rel="stylesheet"/>
 }
 
-<h2>Найдено:</h2><br/>
 <div class="notes-container">
+    <h2 class="finded-title">Найдено:</h2>
     @foreach (var note in Model)
     {
         @Html.Partial("~/Views/Notes/Note.cshtml", note)
