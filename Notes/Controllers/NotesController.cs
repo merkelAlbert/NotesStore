@@ -127,8 +127,8 @@ namespace Notes.Controllers
         [Route("findNote/")]
         public IActionResult FindNote(string searchString)
         {
-            var notes = _databaseContext.Notes.Where(x => x.Text.Contains(searchString)
-                                                          || x.Title.Contains(searchString));
+            var notes = _databaseContext.Notes.Where(x => x.Text.ToLower().Contains(searchString.ToLower())
+                                                          || x.Title.ToLower().Contains(searchString.ToLower()));
             return View("FindedNotes", notes);
         }
     }
