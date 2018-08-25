@@ -32,7 +32,13 @@ namespace Notes
 
             services.AddScoped<IdenticonService>();
 
-            services.AddIdentity<User, IdentityRole>()
+            services.AddIdentity<User, IdentityRole>(options=> {
+                    options.Password.RequireDigit = false;
+                    options.Password.RequiredLength = 6;
+                    options.Password.RequireNonAlphanumeric = false;
+                    options.Password.RequireUppercase = false;
+                    options.Password.RequireLowercase = false;
+                })
                 .AddEntityFrameworkStores<DatabaseContext>();
             
             services.ConfigureApplicationCookie(options => options.LoginPath = "/Login");
