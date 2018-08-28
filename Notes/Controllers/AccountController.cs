@@ -1,22 +1,19 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Notes.DAL.Models;
-using Notes.ViewModels;
+using Notes.Domain.Models;
 
 namespace Notes.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly UserManager<User> _userManager;
-        private readonly SignInManager<User> _signInManager;
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly SignInManager<IdentityUser> _signInManager;
 
-        [BindProperty] public new User User { get; set; }
+        [BindProperty] public new IdentityUser User { get; set; }
 
-        public AccountController(UserManager<User> userManager,
-            SignInManager<User> signInManager)
+        public AccountController(UserManager<IdentityUser> userManager,
+            SignInManager<IdentityUser> signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -44,7 +41,7 @@ namespace Notes.Controllers
                 }
                 else
                 {
-                    var user = new User {UserName = model.UserName, Email = model.Email};
+                    var user = new IdentityUser {UserName = model.UserName, Email = model.Email};
                     var result = await _userManager.CreateAsync(user, model.Password);
                     if (result.Succeeded)
                     {

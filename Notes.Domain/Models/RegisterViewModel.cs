@@ -1,10 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Notes.DAL.Models;
 
-namespace Notes.ViewModels
+namespace Notes.Domain.Models
 {
     public class RegisterViewModel
     {

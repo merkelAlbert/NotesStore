@@ -1,5 +1,5 @@
 ﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
-@using Notes.DAL.Models
+@using Notes.Domain.Entities
 @model IEnumerable<Note>
 @{
     Layout = "_Layout";
@@ -12,6 +12,6 @@
 <div class="notes-container">
     @foreach (var note in Model)
     {
-        @Html.Partial("~/Views/Notes/Note.cshtml", note)
+        @await Html.PartialAsync("~/Views/Notes/Note.cshtml", note)
     }
 </div>

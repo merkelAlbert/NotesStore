@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Notes.DAL.Models;
+using Notes.Domain.Entities;
 
-namespace Notes.DAL
+namespace Notes.Database
 {
     public class DatabaseContext : IdentityDbContext
     {

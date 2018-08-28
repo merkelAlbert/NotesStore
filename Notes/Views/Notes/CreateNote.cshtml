@@ -1,11 +1,10 @@
 ﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
-@using Notes.DAL.Models
-@using Notes.ViewModels
-@model Notes.ViewModels.NoteViewModel
+@using Notes.Domain.Models
+@model Notes.Domain.Models.NoteViewModel
 @{
     Layout = "_Layout";
     ViewData["Title"] = "Создание заметки";
-    var note = (Note) ViewData["Note"];
+    var note = (NoteViewModel) ViewData["Note"];
 }
 
 @section Styles{

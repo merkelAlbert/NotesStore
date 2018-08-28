@@ -1,9 +1,6 @@
-﻿using System;
-using System.IO;
-using System.Net.Http;
-using System.Security.Policy;
+﻿using System.Net.Http;
 
-namespace Notes.Services
+namespace Notes.Domain.Services
 {
     public class IdenticonService
     {

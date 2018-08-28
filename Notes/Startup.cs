@@ -1,14 +1,11 @@
-﻿
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-
-using Notes.DAL;
-using Notes.DAL.Models;
-using Notes.Services;
+using Notes.Database;
+using Notes.Domain.Services;
 
 namespace Notes
 {
@@ -32,7 +29,7 @@ namespace Notes
 
             services.AddScoped<IdenticonService>();
 
-            services.AddIdentity<User, IdentityRole>(options=> {
+            services.AddIdentity<IdentityUser, IdentityRole>(options=> {
                     options.Password.RequireDigit = false;
                     options.Password.RequiredLength = 6;
                     options.Password.RequireNonAlphanumeric = false;

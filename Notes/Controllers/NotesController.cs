@@ -1,30 +1,25 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNet.Identity;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Notes.DAL;
-using Notes.DAL.Models;
-using Notes.Services;
-using Notes.ViewModels;
+using Notes.Database;
+using Notes.Domain.Entities;
+using Notes.Domain.Models;
+using Notes.Domain.Services;
 
 namespace Notes.Controllers
 {
     public class NotesController : Controller
     {
-        private readonly Microsoft.AspNetCore.Identity.UserManager<User> _userManager;
-        private readonly SignInManager<User> _signInManager;
+        private readonly UserManager<IdentityUser> _userManager;
         private readonly DatabaseContext _databaseContext;
         private readonly IdenticonService _identiconService;
 
-        public NotesController(Microsoft.AspNetCore.Identity.UserManager<User> userManager,
-            SignInManager<User> signInManager, DatabaseContext databaseContext, IdenticonService identiconService)
+        public NotesController(UserManager<IdentityUser> userManager,
+            DatabaseContext databaseContext, IdenticonService identiconService)
         {
             _userManager = userManager;
-            _signInManager = signInManager;
             _databaseContext = databaseContext;
             _identiconService = identiconService;
         }
@@ -44,7 +39,7 @@ namespace Notes.Controllers
             var note = new Note();
             if (ModelState.IsValid)
             {
-                var user = await _userManager.FindByIdAsync(User.Identity.GetUserId());
+                var user = await _userManager.GetUserAsync(HttpContext.User);
                 if (user != null)
                 {
                     note.Text = model.Text;
