@@ -10,6 +10,7 @@ using Notes.Domain.Services;
 
 namespace Notes.Controllers
 {
+    [Route("[controller]")]
     public class NotesController : Controller
     {
         private readonly UserManager<IdentityUser> _userManager;

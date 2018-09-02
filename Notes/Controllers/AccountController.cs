@@ -1,22 +1,35 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
+using Microsoft.EntityFrameworkCore;
+using Notes.Database;
 using Notes.Domain.Models;
 
 namespace Notes.Controllers
 {
+    [Route("[controller]")]
     public class AccountController : Controller
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly DatabaseContext _databaseContext;
 
-        [BindProperty] public new IdentityUser User { get; set; }
-
-        public AccountController(UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager)
+        public AccountController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager,
+            RoleManager<IdentityRole> roleManager, DatabaseContext databaseContext)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _roleManager = roleManager;
+            _databaseContext = databaseContext;
+            if (!_roleManager.RoleExistsAsync("Admin").Result)
+            {
+                _roleManager.CreateAsync(new IdentityRole("Admin")).Wait();
+            }
         }
 
 
@@ -45,6 +58,12 @@ namespace Notes.Controllers
                     var result = await _userManager.CreateAsync(user, model.Password);
                     if (result.Succeeded)
                     {
+                        if (model.IsAdmin)
+                        {
+                            var admin = await _userManager.FindByEmailAsync(model.Email);
+                            await _userManager.AddToRoleAsync(admin, "Admin");
+                        }
+
                         return RedirectToAction("Login");
                     }
 
@@ -94,6 +113,23 @@ namespace Notes.Controllers
             }
 
             return View(model);
+        }
+
+        [Authorize(Policy = "Admin")]
+        [HttpGet]
+        [Route("users/")]
+        public IActionResult GetUsers()
+        {
+            var users = new List<UserViewModel>();
+            foreach (var user in _userManager.Users)
+            {
+                var model = new UserViewModel();
+                model.UserName = user.UserName;
+                model.NotesAmount = _databaseContext.Notes.Count(note => note.User.Id == user.Id);
+                users.Add(model);
+            }
+
+            return View("Users", users);
         }
 
         [HttpGet]

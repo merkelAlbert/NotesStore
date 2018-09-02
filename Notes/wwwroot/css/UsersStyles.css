@@ -1,0 +1,34 @@
+.users-container {
+    display: flex;
+    background-color: aliceblue;
+    padding: 30px;
+    min-width: 300px;
+    border-radius: 10px;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+hr {
+    border: none;
+    color: grey;
+    height: 2px;
+    background-color: grey;
+    width: 100%;
+}
+
+.user {
+    display: inline-flex;
+    margin: 5px;
+    width: 100%;
+}
+
+.user-name {
+    flex: 0.8;
+}
+
+.notes-amount {
+    display: flex;
+    width: 50px;
+    justify-content: flex-end;
+}

@@ -32,7 +32,10 @@
         <input class="form-input" type="password" name="PasswordConfirm"/>
         <span asp-validation-for="PasswordConfirm"></span>
     </div>
-
+    <div class="form-item-container">
+        <label asp-for="IsAdmin">Администратор</label>
+        <input type="checkbox" name="IsAdmin" value="true" />
+    </div>
     <div class="form-item-container">
         <input class="form-input" type="submit" value="Зарегистрироваться"/>
     </div>

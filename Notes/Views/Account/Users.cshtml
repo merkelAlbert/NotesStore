@@ -1,0 +1,28 @@
+@using Microsoft.AspNetCore.Identity
+@using Notes.Domain.Models
+@model IEnumerable<UserViewModel>
+
+<!DOCTYPE html>
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Пользователи";
+}
+
+@section Styles{
+    <link href="~/css/UsersStyles.css" rel="stylesheet"/>
+}
+
+<div class="users-container">
+    <div class="user">
+        <div class="user-name">Пользователь</div>
+        <div class="notes-amount">Заметок</div>
+    </div>
+    <hr/>
+    @foreach (var user in Model)
+    {
+        <div class="user">
+            <div class="user-name">@user.UserName</div>
+            <div class="notes-amount">@user.NotesAmount</div>
+        </div>
+    }
+</div>

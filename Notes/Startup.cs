@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Notes.Controllers;
 using Notes.Database;
 using Notes.Domain.Services;
 
@@ -21,7 +22,7 @@ namespace Notes
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
-            
+
             var connectionString = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<DatabaseContext>(
                 options => options.UseNpgsql(connectionString)
@@ -29,7 +30,8 @@ namespace Notes
 
             services.AddScoped<IdenticonService>();
 
-            services.AddIdentity<IdentityUser, IdentityRole>(options=> {
+            services.AddIdentity<IdentityUser, IdentityRole>(options =>
+                {
                     options.Password.RequireDigit = false;
                     options.Password.RequiredLength = 6;
                     options.Password.RequireNonAlphanumeric = false;
@@ -37,8 +39,17 @@ namespace Notes
                     options.Password.RequireLowercase = false;
                 })
                 .AddEntityFrameworkStores<DatabaseContext>();
-            
-            services.ConfigureApplicationCookie(options => options.LoginPath = "/Login");
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("Admin", policy => policy.RequireRole("Admin"));
+            });
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = "/account/login";
+                options.AccessDeniedPath = "/";
+                options.LogoutPath = "/account/logout";
+            });
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
