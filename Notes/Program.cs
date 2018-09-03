@@ -7,6 +7,8 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Notes.Database;
+using Notes.Utils;
 
 namespace Notes
 {
@@ -14,7 +16,7 @@ namespace Notes
     {
         public static void Main(string[] args)
         {
-            BuildWebHost(args).Run();
+            BuildWebHost(args).MigrateDatabase<DatabaseContext>().Run();
         }
 
         public static IWebHost BuildWebHost(string[] args) =>

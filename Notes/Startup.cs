@@ -25,7 +25,7 @@ namespace Notes
 
             var connectionString = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<DatabaseContext>(
-                options => options.UseNpgsql(connectionString)
+                options => options.UseNpgsql(connectionString, b => b.MigrationsAssembly("Notes"))
             );
 
             services.AddScoped<IdenticonService>();

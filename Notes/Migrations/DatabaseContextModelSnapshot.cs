@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Notes.Database;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
-namespace Notes.Database.Migrations
+namespace Notes.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
     partial class DatabaseContextModelSnapshot : ModelSnapshot

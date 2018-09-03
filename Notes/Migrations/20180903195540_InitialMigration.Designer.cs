@@ -7,10 +7,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Notes.Database;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
-namespace Notes.Database.Migrations
+namespace Notes.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20180828174141_InitialMigration")]
+    [Migration("20180903195540_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
