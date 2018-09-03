@@ -57,7 +57,7 @@ namespace Notes.Controllers
             if (string.IsNullOrEmpty(fileName))
                 fileName = "Users";
             _xlsxService.Save(users, fileName);
-            return View("Users", users);
+            return RedirectToAction("GetUsers");
         }
     }
 }

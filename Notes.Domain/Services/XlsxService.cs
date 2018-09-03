@@ -9,7 +9,7 @@ namespace Notes.Domain.Services
     {
         public void Save(List<UserViewModel> users, string name)
         {
-            using (var package = new ExcelPackage(new FileInfo(Path.Combine(Directory.GetCurrentDirectory(), name))))
+            using (var package = new ExcelPackage(new FileInfo(Path.Combine(Directory.GetCurrentDirectory(), name)).Create()))
             {
                 package.Workbook.Worksheets.Add("Users");
                 ExcelWorksheet worksheet = package.Workbook.Worksheets[0];
