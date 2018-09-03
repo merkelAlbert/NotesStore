@@ -29,6 +29,7 @@ namespace Notes
             );
 
             services.AddScoped<IdenticonService>();
+            services.AddScoped<XlsxService>();
 
             services.AddIdentity<IdentityUser, IdentityRole>(options =>
                 {

@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Notes.Database;
 using Notes.Domain.Models;
+using Notes.Domain.Services;
 
 namespace Notes.Controllers
 {
@@ -18,14 +19,17 @@ namespace Notes.Controllers
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly DatabaseContext _databaseContext;
+        private readonly XlsxService _xlsxService;
+
 
         public AccountController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager,
-            RoleManager<IdentityRole> roleManager, DatabaseContext databaseContext)
+            RoleManager<IdentityRole> roleManager, DatabaseContext databaseContext, XlsxService xlsxService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _roleManager = roleManager;
             _databaseContext = databaseContext;
+            _xlsxService = xlsxService;
             if (!_roleManager.RoleExistsAsync("Admin").Result)
             {
                 _roleManager.CreateAsync(new IdentityRole("Admin")).Wait();
@@ -113,23 +117,6 @@ namespace Notes.Controllers
             }
 
             return View(model);
-        }
-
-        [Authorize(Policy = "Admin")]
-        [HttpGet]
-        [Route("users/")]
-        public IActionResult GetUsers()
-        {
-            var users = new List<UserViewModel>();
-            foreach (var user in _userManager.Users)
-            {
-                var model = new UserViewModel();
-                model.UserName = user.UserName;
-                model.NotesAmount = _databaseContext.Notes.Count(note => note.User.Id == user.Id);
-                users.Add(model);
-            }
-
-            return View("Users", users);
         }
 
         [HttpGet]

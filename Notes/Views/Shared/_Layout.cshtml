@@ -26,11 +26,11 @@
                     </form>
                 </li>
                 if (User.IsInRole("Admin"))
-                 {
-                     <li class="header-menu-item">
-                         <a asp-controller="Account" asp-action="GetUsers">Список пользователей</a>
-                     </li>
-                 }
+                {
+                    <li class="header-menu-item">
+                        <a asp-controller="Users" asp-action="GetUsers">Список пользователей</a>
+                    </li>
+                }
                 <li class="header-menu-item">
                     <a asp-controller="Notes" asp-action="CreateNote">Создать заметку</a>
                 </li>

@@ -1,4 +1,4 @@
-@using Microsoft.AspNetCore.Identity
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @using Notes.Domain.Models
 @model IEnumerable<UserViewModel>
 
@@ -25,4 +25,12 @@
             <div class="notes-amount">@user.NotesAmount</div>
         </div>
     }
+    <div class="user">
+        <div class="user-name">Пользователь</div>
+        <div class="notes-amount">Заметок</div>
+    </div>
+    <form method="post" asp-action="SaveUsersToXlsx">
+        <input type="text" id="fileName" name="fileName" placeholder="Введите имя файла"/>
+        <input type="submit" value="Сохранить в файл .xlsx"/>
+    </form>
 </div>
