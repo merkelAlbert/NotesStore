@@ -26,7 +26,7 @@ namespace Notes.Controllers
         }
 
         [Authorize]
-        [Route("createNote/")]
+        [Route("create/")]
         public IActionResult CreateNote()
         {
             return View("CreateNote");
@@ -34,7 +34,7 @@ namespace Notes.Controllers
 
         [Authorize]
         [HttpPost]
-        [Route("createNote/")]
+        [Route("create/")]
         public async Task<IActionResult> CreateNote(NoteViewModel model)
         {
             var note = new Note();
@@ -57,7 +57,7 @@ namespace Notes.Controllers
             return View(model);
         }
 
-        [Route("deleteNote/")]
+        [Route("delete/")]
         public async Task<ActionResult> DeleteNote(int? id)
         {
             if (id != null)
@@ -75,7 +75,7 @@ namespace Notes.Controllers
 
 
         [HttpGet]
-        [Route("updateNote/")]
+        [Route("update/")]
         public IActionResult UpdateNote(int? id)
         {
             if (id != null)
@@ -88,7 +88,7 @@ namespace Notes.Controllers
         }
 
         [HttpPost]
-        [Route("updateNote/")]
+        [Route("update/")]
         public async Task<IActionResult> UpdateNote(NoteViewModel model, int? id)
         {
             if (ModelState.IsValid)
@@ -107,7 +107,7 @@ namespace Notes.Controllers
         }
 
         [HttpGet]
-        [Route("showNote/")]
+        [Route("show/")]
         public IActionResult ShowNote(int? id)
         {
             if (id != null)
@@ -120,11 +120,13 @@ namespace Notes.Controllers
         }
 
         [HttpPost]
-        [Route("findNote/")]
-        public IActionResult FindNote(string searchString)
+        [Route("finded'/")]
+        public async Task<IActionResult> FindNote(string searchString)
         {
-            var notes = _databaseContext.Notes.Where(x => x.Text.ToLower().Contains(searchString.ToLower())
-                                                          || x.Title.ToLower().Contains(searchString.ToLower()));
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            var notes = _databaseContext.Notes.Where(x =>
+                (x.User.Id == user.Id) && (x.Text.ToLower().Contains(searchString.ToLower())
+                                           || x.Title.ToLower().Contains(searchString.ToLower())));
             return View("FindedNotes", notes);
         }
     }
