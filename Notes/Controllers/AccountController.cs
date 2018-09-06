@@ -17,23 +17,17 @@ namespace Notes.Controllers
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly DatabaseContext _databaseContext;
         private readonly XlsxService _xlsxService;
 
 
         public AccountController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager,
-            RoleManager<IdentityRole> roleManager, DatabaseContext databaseContext, XlsxService xlsxService)
+            DatabaseContext databaseContext, XlsxService xlsxService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
-            _roleManager = roleManager;
             _databaseContext = databaseContext;
             _xlsxService = xlsxService;
-            if (!_roleManager.RoleExistsAsync("Admin").Result)
-            {
-                _roleManager.CreateAsync(new IdentityRole("Admin")).Wait();
-            }
         }
 
 

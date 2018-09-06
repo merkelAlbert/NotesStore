@@ -41,14 +41,14 @@ namespace Notes.Controllers
             return users;
         }
 
-        [Authorize(Policy = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public IActionResult GetUsers()
         {
             return View("Users", GetUserViewModels());
         }
 
-        [Authorize(Policy = "Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [Route("save/")]
         public IActionResult SaveUsersToXlsx(string fileName)

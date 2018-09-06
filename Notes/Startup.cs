@@ -40,11 +40,6 @@ namespace Notes
                     options.Password.RequireLowercase = false;
                 })
                 .AddEntityFrameworkStores<DatabaseContext>();
-
-            services.AddAuthorization(options =>
-            {
-                options.AddPolicy("Admin", policy => policy.RequireRole("Admin"));
-            });
             services.ConfigureApplicationCookie(options =>
             {
                 options.LoginPath = "/account/login";
