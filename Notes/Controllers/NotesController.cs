@@ -10,96 +10,63 @@ using Notes.Domain.Services;
 
 namespace Notes.Controllers
 {
+    [Authorize]
     [Route("[controller]")]
     public class NotesController : Controller
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly DatabaseContext _databaseContext;
-        private readonly IdenticonService _identiconService;
+        private readonly NotesService _notesService;
 
-        public NotesController(UserManager<IdentityUser> userManager,
-            DatabaseContext databaseContext, IdenticonService identiconService)
+        public NotesController(NotesService notesService)
         {
-            _userManager = userManager;
-            _databaseContext = databaseContext;
-            _identiconService = identiconService;
+            _notesService = notesService;
         }
 
-        [Authorize]
-        [Route("create/")]
+        [Route("Create/")]
         public IActionResult CreateNote()
         {
             return View("CreateNote");
         }
 
-        [Authorize]
         [HttpPost]
-        [Route("create/")]
+        [Route("Create/")]
         public async Task<IActionResult> CreateNote(NoteViewModel model)
         {
-            var note = new Note();
             if (ModelState.IsValid)
             {
-                var user = await _userManager.GetUserAsync(HttpContext.User);
-                if (user != null)
-                {
-                    note.Text = model.Text;
-                    note.Title = model.Title;
-                    note.User = user;
-                    note.Identicon =
-                        _identiconService.GetIdenticon((model.Text + model.Title).GetHashCode().ToString());
-                    await _databaseContext.Notes.AddAsync(note);
-                    _databaseContext.SaveChanges();
-                    return RedirectToAction("Index", "Home");
-                }
+                await _notesService.CreateNoteAsync(model, HttpContext);
+                return RedirectToAction("Index", "Home");
             }
 
             return View(model);
         }
 
-        [Route("delete/")]
+        [HttpGet]
+        [Route("Delete/")]
         public async Task<ActionResult> DeleteNote(int? id)
         {
             if (id != null)
-            {
-                var note = _databaseContext.Notes.First(x => x.Id.Equals(id));
-                if (note != null)
-                {
-                    _databaseContext.Notes.Remove(note);
-                    await _databaseContext.SaveChangesAsync();
-                }
-            }
-
+                await _notesService.DeleteNoteAsync((int) id);
             return RedirectToAction("Index", "Home");
         }
 
 
         [HttpGet]
-        [Route("update/")]
+        [Route("Update/")]
         public IActionResult UpdateNote(int? id)
         {
             if (id != null)
-            {
-                var note = _databaseContext.Notes.First(x => x.Id.Equals(id));
-                ViewData["note"] = note;
-            }
-
+                ViewData["Note"] = _notesService.GetNoteViewModel((int) id);
             return View("CreateNote");
         }
 
         [HttpPost]
-        [Route("update/")]
+        [Route("Update/")]
         public async Task<IActionResult> UpdateNote(NoteViewModel model, int? id)
         {
             if (ModelState.IsValid)
             {
-                var note = _databaseContext.Notes.First(x => x.Id.Equals(id));
-                note.Text = model.Text;
-                note.Title = model.Title;
-                note.Identicon =
-                    _identiconService.GetIdenticon((model.Text + model.Title).GetHashCode().ToString());
-                _databaseContext.Update(note);
-                await _databaseContext.SaveChangesAsync();
+                if (id != null) 
+                    await _notesService.UpdateNote(model, (int) id);
                 return RedirectToAction("Index", "Home");
             }
 
@@ -107,12 +74,12 @@ namespace Notes.Controllers
         }
 
         [HttpGet]
-        [Route("show/")]
+        [Route("Show/")]
         public IActionResult ShowNote(int? id)
         {
             if (id != null)
             {
-                var note = _databaseContext.Notes.First(x => x.Id.Equals(id));
+                var note = _notesService.GetNote((int) id);
                 return View("ShowNote", note);
             }
 
@@ -120,14 +87,10 @@ namespace Notes.Controllers
         }
 
         [HttpPost]
-        [Route("finded'/")]
-        public async Task<IActionResult> FindNote(string searchString)
+        [Route("Finded/")]
+        public async Task<IActionResult> FindNotes(string searchString)
         {
-            var user = await _userManager.GetUserAsync(HttpContext.User);
-            var notes = _databaseContext.Notes.Where(x =>
-                (x.User.Id == user.Id) && (x.Text.ToLower().Contains(searchString.ToLower())
-                                           || x.Title.ToLower().Contains(searchString.ToLower())));
-            return View("FindedNotes", notes);
+            return View("FindedNotes", await _notesService.FindNotes(searchString, HttpContext));
         }
     }
 }

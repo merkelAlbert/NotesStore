@@ -15,56 +15,34 @@ namespace Notes.Controllers
     [Route("[controller]")]
     public class AccountController : Controller
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly DatabaseContext _databaseContext;
-        private readonly XlsxService _xlsxService;
+        private readonly AccountService _accountService;
 
-
-        public AccountController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager,
-            DatabaseContext databaseContext, XlsxService xlsxService)
+        public AccountController(AccountService accountService)
         {
-            _userManager = userManager;
-            _signInManager = signInManager;
-            _databaseContext = databaseContext;
-            _xlsxService = xlsxService;
+            _accountService = accountService;
         }
 
-
         [HttpGet]
-        [Route("register/")]
+        [Route("Register/")]
         public IActionResult Register()
         {
             return View("Register");
         }
 
-
         [HttpPost]
-        [Route("register/")]
+        [Route("Register/")]
         public async Task<IActionResult> Register(RegisterViewModel model)
         {
             if (ModelState.IsValid)
             {
-                var userByEmail = await _userManager.FindByEmailAsync(model.Email);
-                if (userByEmail != null)
-                {
+                if (await _accountService.UserExistsAsync(model.Email))
+
                     ModelState.AddModelError("", "Пользователь с данным email уже существует");
-                }
                 else
                 {
-                    var user = new IdentityUser {UserName = model.UserName, Email = model.Email};
-                    var result = await _userManager.CreateAsync(user, model.Password);
+                    var result = await _accountService.RegisterAsync(model);
                     if (result.Succeeded)
-                    {
-                        if (model.IsAdmin)
-                        {
-                            var admin = await _userManager.FindByEmailAsync(model.Email);
-                            await _userManager.AddToRoleAsync(admin, "Admin");
-                        }
-
                         return RedirectToAction("Login");
-                    }
-
                     foreach (var error in result.Errors)
                     {
                         ModelState.AddModelError("", error.Description);
@@ -75,49 +53,34 @@ namespace Notes.Controllers
             return View(model);
         }
 
-
         [HttpGet]
-        [Route("login/")]
+        [Route("Login/")]
         public IActionResult Login()
         {
             return View("Login");
         }
 
-
         [HttpPost]
-        [Route("login/")]
+        [Route("Login/")]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
             if (ModelState.IsValid)
             {
-                var user = await _userManager.FindByEmailAsync(model.Email);
-                if (user != null)
-                {
-                    var result = await _signInManager.PasswordSignInAsync(user.UserName,
-                        model.Password, model.RememberMe, false);
-                    if (result.Succeeded)
-                    {
-                        return RedirectToAction("Index", "Home");
-                    }
-                    else
-                    {
-                        ModelState.AddModelError("", "Неправильный email и (или) пароль");
-                    }
-                }
-                else
-                {
-                    ModelState.AddModelError("", "Неправильный email и (или) пароль");
-                }
+                var result = await _accountService.SignInAsync(model);
+                if (result.Succeeded)
+                    return RedirectToAction("Index", "Home");
+                ModelState.AddModelError("", "Неправильный email и (или) пароль");
             }
 
             return View(model);
         }
 
         [HttpGet]
-        [Route("logout/")]
+        [Authorize]
+        [Route("Logout/")]
         public async Task<IActionResult> Logout()
         {
-            await _signInManager.SignOutAsync();
+            await _accountService.SignOutAsync();
             return RedirectToAction("Login");
         }
     }

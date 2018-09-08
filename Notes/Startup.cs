@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Notes.Controllers;
 using Notes.Database;
+using Notes.Domain.Extensions;
 using Notes.Domain.Services;
 
 namespace Notes
@@ -28,8 +29,7 @@ namespace Notes
                 options => options.UseNpgsql(connectionString, b => b.MigrationsAssembly("Notes"))
             );
 
-            services.AddScoped<IdenticonService>();
-            services.AddScoped<XlsxService>();
+            services.AddDomainServices();
 
             services.AddIdentity<IdentityUser, IdentityRole>(options =>
                 {
@@ -42,9 +42,9 @@ namespace Notes
                 .AddEntityFrameworkStores<DatabaseContext>();
             services.ConfigureApplicationCookie(options =>
             {
-                options.LoginPath = "/account/login";
+                options.LoginPath = "/Account/Login";
                 options.AccessDeniedPath = "/";
-                options.LogoutPath = "/account/logout";
+                options.LogoutPath = "/Account/Logout";
             });
         }
 

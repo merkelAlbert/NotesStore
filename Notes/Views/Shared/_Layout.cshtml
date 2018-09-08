@@ -20,7 +20,7 @@
             @if (User.Identity.IsAuthenticated)
             {
                 <li>
-                    <form method="post" asp-action="FindNote" asp-controller="Notes">
+                    <form method="post" asp-action="FindNotes" asp-controller="Notes">
                         <input class="header-search" name="SearchString" type="text"/>
                         <input class="header-search" type="submit" value="Найти"/>
                     </form>
@@ -28,7 +28,7 @@
                 if (User.IsInRole("Admin"))
                 {
                     <li class="header-menu-item">
-                        <a asp-controller="Users" asp-action="GetUsers">Список пользователей</a>
+                        <a asp-controller="Admin" asp-action="GetUsers">Список пользователей</a>
                     </li>
                 }
                 <li class="header-menu-item">
