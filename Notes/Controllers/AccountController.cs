@@ -1,12 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Routing;
-using Microsoft.EntityFrameworkCore;
-using Notes.Database;
+using Notes.Domain.Interfaces;
 using Notes.Domain.Models;
 using Notes.Domain.Services;
 
@@ -15,9 +10,9 @@ namespace Notes.Controllers
     [Route("[controller]")]
     public class AccountController : Controller
     {
-        private readonly AccountService _accountService;
+        private readonly IAccountService _accountService;
 
-        public AccountController(AccountService accountService)
+        public AccountController(IAccountService accountService)
         {
             _accountService = accountService;
         }

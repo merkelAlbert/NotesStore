@@ -1,8 +1,9 @@
 ﻿using System.Net.Http;
+using Notes.Domain.Interfaces;
 
 namespace Notes.Domain.Services
 {
-    public class IdenticonService
+    public class IdenticonService : IIdenticonService
     {
         private const string Url = "https://avatars.dicebear.com/v2/identicon";
 

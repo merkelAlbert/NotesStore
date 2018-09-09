@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Notes.Database;
+using Notes.Domain.Interfaces;
 using Notes.Domain.Models;
 using Notes.Domain.Services;
 
@@ -15,9 +16,9 @@ namespace Notes.Controllers
     [Route("[controller]")]
     public class AdminController : Controller
     {
-        private readonly AdminService _adminService;
+        private readonly IAdminService _adminService;
 
-        public AdminController(AdminService adminService)
+        public AdminController(IAdminService adminService)
         {
             _adminService = adminService;
         }

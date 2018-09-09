@@ -2,17 +2,18 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Identity;
 using Notes.Database;
+using Notes.Domain.Interfaces;
 using Notes.Domain.Models;
 
 namespace Notes.Domain.Services
 {
-    public class AdminService
+    public class AdminService : IAdminService
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly DatabaseContext _databaseContext;
-        private readonly XlsxService _xlsxService;
+        private readonly IXlsxService _xlsxService;
 
-        public AdminService(UserManager<IdentityUser> userManager, DatabaseContext databaseContext, XlsxService xlsxService)
+        public AdminService(UserManager<IdentityUser> userManager, DatabaseContext databaseContext, IXlsxService xlsxService)
         {
             _userManager = userManager;
             _databaseContext = databaseContext;

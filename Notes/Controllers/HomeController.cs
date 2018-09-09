@@ -6,31 +6,23 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Notes.Database;
 using Notes.Domain.Entities;
+using Notes.Domain.Interfaces;
 
 namespace Notes.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly DatabaseContext _databaseContext;
+        private readonly INotesService _notesService;
 
-        public HomeController(UserManager<IdentityUser> userManager, DatabaseContext databaseContext)
+        public HomeController(INotesService notesService)
         {
-            _userManager = userManager;
-            _databaseContext = databaseContext;
+            _notesService = notesService;
         }
 
         [Authorize]
         public async Task<IActionResult> Index()
         {
-            var user = await _userManager.GetUserAsync(HttpContext.User);
-            var notes = new List<Note>();
-            if (user != null)
-            {
-                notes = _databaseContext.Notes.Where(note => note.User.Id.Equals(user.Id)).ToList();
-            }
-
-            return View("Index", notes);
+            return View("Index", await _notesService.GetNotes(HttpContext));
         }
     }
 }

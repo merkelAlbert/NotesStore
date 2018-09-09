@@ -1,11 +1,12 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
+using Notes.Domain.Interfaces;
 using Notes.Domain.Models;
 
 
 namespace Notes.Domain.Services
 {
-    public class AccountService
+    public class AccountService : IAccountService
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;

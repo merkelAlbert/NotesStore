@@ -6,18 +6,19 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Notes.Database;
 using Notes.Domain.Entities;
+using Notes.Domain.Interfaces;
 using Notes.Domain.Models;
 
 namespace Notes.Domain.Services
 {
-    public class NotesService
+    public class NotesService : INotesService
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly DatabaseContext _databaseContext;
-        private readonly IdenticonService _identiconService;
+        private readonly IIdenticonService _identiconService;
 
         public NotesService(UserManager<IdentityUser> userManager, DatabaseContext databaseContext,
-            IdenticonService identiconService)
+            IIdenticonService identiconService)
         {
             _userManager = userManager;
             _databaseContext = databaseContext;
@@ -36,6 +37,18 @@ namespace Notes.Domain.Services
             {
                 Id = note.Id, Identicon = note.Identicon, Text = note.Text, Title = note.Title
             };
+        }
+
+        public async Task<List<Note>> GetNotes(HttpContext context)
+        {
+            var user = await _userManager.GetUserAsync(context.User);
+            var notes = new List<Note>();
+            if (user != null)
+            {
+                notes = _databaseContext.Notes.Where(note => note.User.Id.Equals(user.Id)).ToList();
+            }
+
+            return notes;
         }
 
         public async Task CreateNoteAsync(NoteViewModel model, HttpContext context)
@@ -64,7 +77,7 @@ namespace Notes.Domain.Services
             }
         }
 
-        public async Task UpdateNote(NoteViewModel model, int id)
+        public async Task UpdateNoteAsync(NoteViewModel model, int id)
         {
             var note = GetNote(id);
             note.Text = model.Text;
@@ -75,7 +88,7 @@ namespace Notes.Domain.Services
             await _databaseContext.SaveChangesAsync();
         }
 
-        public async Task<List<Note>> FindNotes(string searchString, HttpContext context)
+        public async Task<List<Note>> FindNotesAsync(string searchString, HttpContext context)
         {
             var user = await _userManager.GetUserAsync(context.User);
             var notes = _databaseContext.Notes.Where(x =>

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Notes.Database;
 using Notes.Domain.Entities;
+using Notes.Domain.Interfaces;
 using Notes.Domain.Models;
 using Notes.Domain.Services;
 
@@ -14,9 +15,9 @@ namespace Notes.Controllers
     [Route("[controller]")]
     public class NotesController : Controller
     {
-        private readonly NotesService _notesService;
+        private readonly INotesService _notesService;
 
-        public NotesController(NotesService notesService)
+        public NotesController(INotesService notesService)
         {
             _notesService = notesService;
         }
@@ -66,7 +67,7 @@ namespace Notes.Controllers
             if (ModelState.IsValid)
             {
                 if (id != null) 
-                    await _notesService.UpdateNote(model, (int) id);
+                    await _notesService.UpdateNoteAsync(model, (int) id);
                 return RedirectToAction("Index", "Home");
             }
 
@@ -90,7 +91,7 @@ namespace Notes.Controllers
         [Route("Finded/")]
         public async Task<IActionResult> FindNotes(string searchString)
         {
-            return View("FindedNotes", await _notesService.FindNotes(searchString, HttpContext));
+            return View("FindedNotes", await _notesService.FindNotesAsync(searchString, HttpContext));
         }
     }
 }

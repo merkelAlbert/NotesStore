@@ -1,4 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
+using Notes.Domain.Interfaces;
 using Notes.Domain.Services;
 
 namespace Notes.Domain.Extensions
@@ -7,11 +8,11 @@ namespace Notes.Domain.Extensions
     {
         public static IServiceCollection AddDomainServices(this IServiceCollection services)
         {
-            services.AddScoped<AccountService>();
-            services.AddScoped<AdminService>();
-            services.AddScoped<NotesService>();
-            services.AddScoped<IdenticonService>();
-            services.AddScoped<XlsxService>();
+            services.AddScoped<IAccountService, AccountService>();
+            services.AddScoped<IAdminService, AdminService>();
+            services.AddScoped<INotesService, NotesService>();
+            services.AddScoped<IIdenticonService, IdenticonService>();
+            services.AddScoped<IXlsxService, XlsxService>();
             return services;
         }
     }

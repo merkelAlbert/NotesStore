@@ -4,10 +4,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Notes.Controllers;
 using Notes.Database;
 using Notes.Domain.Extensions;
-using Notes.Domain.Services;
 
 namespace Notes
 {

@@ -1,15 +1,17 @@
 using System.Collections.Generic;
 using System.IO;
+using Notes.Domain.Interfaces;
 using Notes.Domain.Models;
 using OfficeOpenXml;
 
 namespace Notes.Domain.Services
 {
-    public class XlsxService
+    public class XlsxService : IXlsxService
     {
-        public void Save(List<UserViewModel> users, string name)
+        public void Save(List<UserViewModel> users, string fileName)
         {
-            using (var package = new ExcelPackage(new FileInfo(Path.Combine(Directory.GetCurrentDirectory(), name)).Create()))
+            using (var package =
+                new ExcelPackage(new FileInfo(Path.Combine(Directory.GetCurrentDirectory(), fileName)).Create()))
             {
                 package.Workbook.Worksheets.Add("Users");
                 ExcelWorksheet worksheet = package.Workbook.Worksheets[0];
