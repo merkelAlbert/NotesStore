@@ -1,9 +1,11 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Notes.Database;
 using Notes.Domain.Entities;
 using Notes.Domain.Interfaces;
@@ -25,51 +27,41 @@ namespace Notes.Domain.Services
             _identiconService = identiconService;
         }
 
-        public Note GetNote(int id)
+        public async Task<Note> GetNoteAsync(int id)
         {
-            return _databaseContext.Notes.First(x => x.Id.Equals(id));
+            return await _databaseContext.Notes.FirstOrDefaultAsync(x => x.Id.Equals(id));
         }
 
         public NoteViewModel GetNoteViewModel(int id)
         {
-            var note = GetNote(id);
+            var note = GetNoteAsync(id).Result;
             return new NoteViewModel()
             {
                 Id = note.Id, Identicon = note.Identicon, Text = note.Text, Title = note.Title
             };
         }
 
-        public async Task<List<Note>> GetNotes(HttpContext context)
+        public List<Note> GetNotes(string userId)
         {
-            var user = await _userManager.GetUserAsync(context.User);
-            var notes = new List<Note>();
-            if (user != null)
-            {
-                notes = _databaseContext.Notes.Where(note => note.User.Id.Equals(user.Id)).ToList();
-            }
-
-            return notes;
+            return _databaseContext.Notes.Where(note => note.User.Id.Equals(userId)).ToList();
         }
 
-        public async Task CreateNoteAsync(NoteViewModel model, HttpContext context)
+        public async Task CreateNoteAsync(NoteViewModel model, string userId)
         {
             var note = new Note();
-            var user = await _userManager.GetUserAsync(context.User);
-            if (user != null)
-            {
-                note.Text = model.Text;
-                note.Title = model.Title;
-                note.User = user;
-                note.Identicon =
-                    _identiconService.GetIdenticon((model.Text + model.Title).GetHashCode().ToString());
-                await _databaseContext.Notes.AddAsync(note);
-                await _databaseContext.SaveChangesAsync();
-            }
+            var user = await _userManager.FindByIdAsync(userId);
+            note.Text = model.Text;
+            note.Title = model.Title;
+            note.User = user;
+            note.Identicon =
+                _identiconService.GetIdenticon((model.Text + model.Title).GetHashCode().ToString());
+            await _databaseContext.Notes.AddAsync(note);
+            await _databaseContext.SaveChangesAsync();
         }
 
         public async Task DeleteNoteAsync(int id)
         {
-            var note = GetNote(id);
+            var note = await GetNoteAsync(id);
             if (note != null)
             {
                 _databaseContext.Notes.Remove(note);
@@ -79,7 +71,7 @@ namespace Notes.Domain.Services
 
         public async Task UpdateNoteAsync(NoteViewModel model, int id)
         {
-            var note = GetNote(id);
+            var note = await GetNoteAsync(id);
             note.Text = model.Text;
             note.Title = model.Title;
             note.Identicon =
@@ -88,9 +80,9 @@ namespace Notes.Domain.Services
             await _databaseContext.SaveChangesAsync();
         }
 
-        public async Task<List<Note>> FindNotesAsync(string searchString, HttpContext context)
+        public async Task<List<Note>> FindNotesAsync(string searchString, string userId)
         {
-            var user = await _userManager.GetUserAsync(context.User);
+            var user = await _userManager.FindByIdAsync(userId);
             var notes = _databaseContext.Notes.Where(x =>
                 (x.User.Id == user.Id) && (x.Text.ToLower().Contains(searchString.ToLower())
                                            || x.Title.ToLower().Contains(searchString.ToLower()))).ToList();

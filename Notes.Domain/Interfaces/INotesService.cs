@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -8,13 +9,13 @@ namespace Notes.Domain.Interfaces
 {
     public interface INotesService
     {
-        Note GetNote(int id);
+        Task<Note> GetNoteAsync(int id);
         NoteViewModel GetNoteViewModel(int id);
-        Task<List<Note>> GetNotes(HttpContext context);
-        Task CreateNoteAsync(NoteViewModel model, HttpContext context);
+        List<Note> GetNotes(string userId);
+        Task CreateNoteAsync(NoteViewModel model, string userId);
         Task DeleteNoteAsync(int id);
         Task UpdateNoteAsync(NoteViewModel model, int id);
-        Task<List<Note>> FindNotesAsync(string searchString, HttpContext context);
+        Task<List<Note>> FindNotesAsync(string searchString, string userId);
         
     }
 }

@@ -25,17 +25,25 @@ namespace Notes.Controllers
 
         [HttpGet]
         [Route("Users/")]
-        public IActionResult GetUsers()
+        public async Task<IActionResult> GetUsers()
         {
-            return View("Users", _adminService.GetUsersWithNotes());
+            return View("Users", await _adminService.GetUsersWithNotesAsync());
         }
 
         [HttpPost]
         [Route("Users/Save/")]
         public IActionResult SaveUsersToXlsx(string fileName)
         {
-            _adminService.SaveUserToXlsx(fileName);
+            _adminService.SaveUserToXlsxAsync(fileName);
             return RedirectToAction("GetUsers");
+        }
+
+
+        [HttpPost]
+        [Route("Users/ChangeRole")]
+        public async Task ChangeUserRole(string userId, string role)
+        {
+            await _adminService.ChangeUserRoleAsync(userId, role);
         }
     }
 }

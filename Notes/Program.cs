@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Notes.Database;
+using Notes.Domain.Utils;
 using Notes.Utils;
 
 namespace Notes
@@ -19,7 +20,7 @@ namespace Notes
         {
             BuildWebHost(args)
                 .MigrateDatabase<DatabaseContext>()
-                .InitializeRoles<RoleManager<IdentityRole>>()
+                .Initialize<RolesInitializer>(x => Task.WaitAll(x.InitializeAsync()))
                 .Run();
         }
 

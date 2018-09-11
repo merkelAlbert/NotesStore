@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Notes.Database;
@@ -16,11 +17,14 @@ namespace Notes.Controllers
     public class NotesController : Controller
     {
         private readonly INotesService _notesService;
+        private readonly IAccountService _accountService;
 
-        public NotesController(INotesService notesService)
+        public NotesController(INotesService notesService, IAccountService accountService)
         {
             _notesService = notesService;
+            _accountService = accountService;
         }
+
 
         [Route("Create/")]
         public IActionResult CreateNote()
@@ -32,9 +36,10 @@ namespace Notes.Controllers
         [Route("Create/")]
         public async Task<IActionResult> CreateNote(NoteViewModel model)
         {
+            var userId = await _accountService.GetCurrentUserIdAsync(HttpContext);
             if (ModelState.IsValid)
             {
-                await _notesService.CreateNoteAsync(model, HttpContext);
+                await _notesService.CreateNoteAsync(model, userId);
                 return RedirectToAction("Index", "Home");
             }
 
@@ -66,7 +71,7 @@ namespace Notes.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (id != null) 
+                if (id != null)
                     await _notesService.UpdateNoteAsync(model, (int) id);
                 return RedirectToAction("Index", "Home");
             }
@@ -76,11 +81,11 @@ namespace Notes.Controllers
 
         [HttpGet]
         [Route("Show/")]
-        public IActionResult ShowNote(int? id)
+        public async Task<IActionResult> ShowNote(int? id)
         {
             if (id != null)
             {
-                var note = _notesService.GetNote((int) id);
+                var note = await _notesService.GetNoteAsync((int) id);
                 return View("ShowNote", note);
             }
 
@@ -91,7 +96,9 @@ namespace Notes.Controllers
         [Route("Finded/")]
         public async Task<IActionResult> FindNotes(string searchString)
         {
-            return View("FindedNotes", await _notesService.FindNotesAsync(searchString, HttpContext));
+            return View("FindedNotes",
+                await _notesService.FindNotesAsync(searchString,
+                    await _accountService.GetCurrentUserIdAsync(HttpContext)));
         }
     }
 }

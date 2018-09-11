@@ -16,7 +16,5 @@ namespace Notes.Domain.Models
         [DataType(DataType.Password)]
         [Compare("Password", ErrorMessage = "Пароли не совпадают")]
         public string PasswordConfirm { get; set; }
-
-        public bool IsAdmin { get; set; }
     }
 }

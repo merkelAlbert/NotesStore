@@ -19,15 +19,12 @@ namespace Notes.Utils
             return host;
         }
 
-        public static IWebHost InitializeRoles<TManager>(this IWebHost host) where TManager : RoleManager<IdentityRole>
+        public static IWebHost Initialize<T>(this IWebHost host, Action<T> setUp)
         {
             using (var scope = host.Services.CreateScope())
             {
-                var roleManager = scope.ServiceProvider.GetRequiredService<TManager>();
-                if (!roleManager.RoleExistsAsync("Admin").Result)
-                {
-                    roleManager.CreateAsync(new IdentityRole("Admin")).Wait();
-                }
+                var service = scope.ServiceProvider.GetRequiredService<T>();
+                setUp(service);
             }
             return host;
         }

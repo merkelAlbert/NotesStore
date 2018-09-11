@@ -19,16 +19,22 @@ hr {
 
 .user {
     display: inline-flex;
-    margin: 5px;
+    margin: 25px;
     width: 100%;
 }
 
 .user-name {
-    flex: 0.8;
+    width: 30%;
+    overflow-wrap: break-word;
+}
+
+.user-role {
+    width: 60%;
+    margin-left: 10px;
 }
 
 .notes-amount {
     display: flex;
-    width: 50px;
+    width: 20%;
     justify-content: flex-end;
 }

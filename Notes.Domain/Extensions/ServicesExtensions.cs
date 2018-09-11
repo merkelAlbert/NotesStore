@@ -1,6 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Notes.Domain.Interfaces;
 using Notes.Domain.Services;
+using Notes.Domain.Utils;
 
 namespace Notes.Domain.Extensions
 {
@@ -13,6 +14,7 @@ namespace Notes.Domain.Extensions
             services.AddScoped<INotesService, NotesService>();
             services.AddScoped<IIdenticonService, IdenticonService>();
             services.AddScoped<IXlsxService, XlsxService>();
+            services.AddScoped<RolesInitializer>();
             return services;
         }
     }

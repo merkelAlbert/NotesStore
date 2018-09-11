@@ -6,11 +6,11 @@
     <Folder Include="wwwroot\" />
   </ItemGroup>
   <ItemGroup>
-      <PackageReference Include="Microsoft.AspNetCore.All" Version="2.1.2"/>
+      <PackageReference Include="Microsoft.AspNetCore.All" Version="2.1.2" />
   </ItemGroup>
   <ItemGroup>
-      <ProjectReference Include="..\Notes.Database\Notes.Database.csproj"/>
-      <ProjectReference Include="..\Notes.Domain.Entities\Notes.Domain.Entities.csproj"/>
-      <ProjectReference Include="..\Notes.Domain\Notes.Domain.csproj"/>
+      <ProjectReference Include="..\Notes.Database\Notes.Database.csproj" />
+      <ProjectReference Include="..\Notes.Domain.Entities\Notes.Domain.Entities.csproj" />
+      <ProjectReference Include="..\Notes.Domain\Notes.Domain.csproj" />
   </ItemGroup>
 </Project>

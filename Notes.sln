@@ -8,6 +8,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Notes.Domain.Entities", "No
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Notes.Domain", "Notes.Domain\Notes.Domain.csproj", "{4D3422A2-6FEB-4279-8FB7-C3D22DEEEF25}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Notes.Domain.Testing", "Notes.Domain.Testing\Notes.Domain.Testing.csproj", "{D79C92A2-1DC7-426A-A157-3F0D0E5C00AF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +32,9 @@ Global
 		{4D3422A2-6FEB-4279-8FB7-C3D22DEEEF25}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4D3422A2-6FEB-4279-8FB7-C3D22DEEEF25}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4D3422A2-6FEB-4279-8FB7-C3D22DEEEF25}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D79C92A2-1DC7-426A-A157-3F0D0E5C00AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D79C92A2-1DC7-426A-A157-3F0D0E5C00AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D79C92A2-1DC7-426A-A157-3F0D0E5C00AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D79C92A2-1DC7-426A-A157-3F0D0E5C00AF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

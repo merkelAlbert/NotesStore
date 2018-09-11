@@ -1,5 +1,8 @@
+using System;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Notes.Domain.Enums;
 using Notes.Domain.Interfaces;
 using Notes.Domain.Models;
 
@@ -17,6 +20,18 @@ namespace Notes.Domain.Services
             _signInManager = signInManager;
         }
 
+
+        public async Task<string> GetCurrentUserIdAsync(HttpContext context)
+        {
+            if (context != null)
+            {
+                var user = await _userManager.GetUserAsync(context.User);
+                return user.Id;
+            }
+
+            return new Guid().ToString();
+        }
+
         public async Task<bool> UserExistsAsync(string email)
         {
             var userByEmail = await _userManager.FindByEmailAsync(email);
@@ -31,11 +46,7 @@ namespace Notes.Domain.Services
             var result = await _userManager.CreateAsync(user, model.Password);
             if (result.Succeeded)
             {
-                if (model.IsAdmin)
-                {
-                    var admin = await _userManager.FindByEmailAsync(model.Email);
-                    await _userManager.AddToRoleAsync(admin, "Admin");
-                }
+                await _userManager.AddToRoleAsync(user, Role.User.ToString());
             }
 
             return result;

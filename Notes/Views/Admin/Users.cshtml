@@ -1,4 +1,5 @@
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@using Notes.Domain.Enums
 @using Notes.Domain.Models
 @model IEnumerable<UserViewModel>
 
@@ -23,6 +24,28 @@
         <div class="user">
             <div class="user-name">@user.UserName</div>
             <div class="notes-amount">@user.NotesAmount</div>
+            <div class="user-role">
+                @if (user.UserName != "admin" && User.Identity.Name != user.UserName)
+                {
+                    <form method="post" asp-action="ChangeUserRole">
+                        <input type="hidden" id="userId" name="userId" value="@user.UserId"/>
+                        <select id="role" name="role">
+                            @foreach (var role in Enum.GetNames(typeof(Role)))
+                            {
+                                if (role == user.Role.ToString())
+                                {
+                                    <option selected>@role</option>
+                                }
+                                else
+                                {
+                                    <option>@role</option>
+                                }
+                            }
+                        </select>
+                        <input type="submit" value="Сменить роль">
+                    </form>
+                }
+            </div>
         </div>
     }
     <form method="post" asp-action="SaveUsersToXlsx">
