@@ -41,9 +41,10 @@ namespace Notes.Controllers
 
         [HttpPost]
         [Route("Users/ChangeRole")]
-        public async Task ChangeUserRole(string userId, string role)
+        public async Task<IActionResult> ChangeUserRole(string userId, string role)
         {
             await _adminService.ChangeUserRoleAsync(userId, role);
+            return RedirectToAction("GetUsers");
         }
     }
 }
