@@ -48,7 +48,7 @@ namespace Notes.Domain.Services
             await _userManager.AddToRoleAsync(user, role);
         }
 
-        public async Task SaveUserToXlsxAsync(string fileName)
+        public async Task SaveUsersToXlsxAsync(string fileName)
         {
             var users = await GetUsersWithNotesAsync();
             if (string.IsNullOrEmpty(fileName))

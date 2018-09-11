@@ -32,9 +32,9 @@ namespace Notes.Controllers
 
         [HttpPost]
         [Route("Users/Save/")]
-        public IActionResult SaveUsersToXlsx(string fileName)
+        public async Task<IActionResult> SaveUsersToXlsx(string fileName)
         {
-            _adminService.SaveUserToXlsxAsync(fileName);
+            await _adminService.SaveUsersToXlsxAsync(fileName);
             return RedirectToAction("GetUsers");
         }
 

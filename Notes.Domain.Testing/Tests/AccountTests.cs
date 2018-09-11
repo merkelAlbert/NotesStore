@@ -15,6 +15,13 @@ namespace Notes.Domain.Testing.Tests
         private IAccountService _accountService;
         private DatabaseContext _databaseContext;
 
+        public AccountTests()
+        {
+            _accountService = Initializer.Provider.GetService<IAccountService>();
+            _databaseContext = Initializer.Provider.GetService<DatabaseContext>();
+        }
+
+        
         private RegisterViewModel GetRegisterViewModel()
         {
             return new RegisterViewModel
@@ -32,12 +39,6 @@ namespace Notes.Domain.Testing.Tests
                 Password = Constants.FakeUserPassword,
                 RememberMe = false
             };
-        }
-
-        public AccountTests()
-        {
-            _accountService = Initializer.Provider.GetService<IAccountService>();
-            _databaseContext = Initializer.Provider.GetService<DatabaseContext>();
         }
 
         [TearDown]

@@ -25,6 +25,14 @@ namespace Notes.Domain.Testing.Tests
         private const string Title = "Заметка";
         private const string Text = "Текст заметки";
         private const int NotesAmount = 10;
+        
+        public NotesTests()
+        {
+            _notesService = Initializer.Provider.GetService<INotesService>();
+            _databaseContext = Initializer.Provider.GetService<DatabaseContext>();
+            _identiconService = Initializer.Provider.GetService<IIdenticonService>();
+            _notesWrapper = Initializer.Provider.GetService<NotesWrapper>();
+        }
 
         private NoteViewModel GetNoteViewModel(string title, string text)
         {
@@ -33,14 +41,6 @@ namespace Notes.Domain.Testing.Tests
             note.Text = text;
             note.Title = title;
             return note;
-        }
-
-        public NotesTests()
-        {
-            _notesService = Initializer.Provider.GetService<INotesService>();
-            _databaseContext = Initializer.Provider.GetService<DatabaseContext>();
-            _identiconService = Initializer.Provider.GetService<IIdenticonService>();
-            _notesWrapper = Initializer.Provider.GetService<NotesWrapper>();
         }
 
         [TearDown]

@@ -8,6 +8,6 @@ namespace Notes.Domain.Interfaces
     {
         Task<List<UserViewModel>> GetUsersWithNotesAsync();
         Task ChangeUserRoleAsync(string userId, string role);
-        Task SaveUserToXlsxAsync(string fileName);
+        Task SaveUsersToXlsxAsync(string fileName);
     }
 }

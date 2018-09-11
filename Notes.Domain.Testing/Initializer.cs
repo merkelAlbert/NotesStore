@@ -8,6 +8,7 @@ using Notes.Domain.Extensions;
 using Notes.Domain.Interfaces;
 using Notes.Domain.Testing.Services;
 using Notes.Domain.Testing.Wrappers;
+using Notes.Domain.Utils;
 using NUnit.Framework;
 
 namespace Notes.Domain.Testing
@@ -15,8 +16,6 @@ namespace Notes.Domain.Testing
     [SetUpFixture]
     public class Initializer
     {
-
-
         public static IServiceProvider Provider { get; private set; }
 
         [OneTimeSetUp]
@@ -27,6 +26,7 @@ namespace Notes.Domain.Testing
             services.AddDbContext<DatabaseContext>(options => { options.UseInMemoryDatabase("Notes"); });
             services.AddScoped<IIdenticonService, FakeIdenticonService>();
             services.AddScoped<NotesWrapper>();
+            services.AddScoped<RolesInitializer>();
 
             services.AddIdentity<IdentityUser, IdentityRole>(options =>
                 {
@@ -37,7 +37,7 @@ namespace Notes.Domain.Testing
                     options.Password.RequireLowercase = false;
                 })
                 .AddEntityFrameworkStores<DatabaseContext>();
-            
+
             Provider = services.BuildServiceProvider();
         }
     }
