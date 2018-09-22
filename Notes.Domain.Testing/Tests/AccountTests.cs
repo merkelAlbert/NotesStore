@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Notes.Database;
 using Notes.Domain.Interfaces;
 using Notes.Domain.Models;
+using Notes.Domain.Utils;
 using NUnit.Framework;
 
 namespace Notes.Domain.Testing.Tests
@@ -19,6 +20,7 @@ namespace Notes.Domain.Testing.Tests
         {
             _accountService = Initializer.Provider.GetService<IAccountService>();
             _databaseContext = Initializer.Provider.GetService<DatabaseContext>();
+            Initializer.Provider.GetService<RolesInitializer>().InitializeAsync().Wait();
         }
 
         

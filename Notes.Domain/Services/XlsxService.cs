@@ -11,7 +11,7 @@ namespace Notes.Domain.Services
     {
         public void Save(List<UserViewModel> users, string fileName)
         {
-            using (var file = new FileInfo(Path.Combine(Directory.GetCurrentDirectory(), fileName)).Create())
+            using (var file = new FileInfo(Path.Combine(Directory.GetCurrentDirectory(), fileName + ".xlsx")).Create())
             {
                 using (var package =
                     new ExcelPackage(file))

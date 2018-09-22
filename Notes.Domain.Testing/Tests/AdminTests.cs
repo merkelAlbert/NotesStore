@@ -72,10 +72,10 @@ namespace Notes.Domain.Testing.Tests
         public async Task SaveUsersToXlsx_WithCorrectParams_SavesUsersToFile()
         {
             await _adminService.SaveUsersToXlsxAsync(FileName);
-            
+
             using (var package =
                 new ExcelPackage(
-                    new FileInfo(Path.Combine(Directory.GetCurrentDirectory(), FileName))))
+                    new FileInfo(Path.Combine(Directory.GetCurrentDirectory(), FileName + ".xlsx"))))
             {
                 ExcelWorksheet worksheet = package.Workbook.Worksheets[0];
                 Assert.AreEqual("admin", worksheet.Cells[1, 1].Value.ToString());
